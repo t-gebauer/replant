@@ -1,0 +1,18 @@
+{
+  "name": "replant",
+  "version": "0.0.1",
+  "description": "A source code transpiler",
+  "repository": "https://github.com/t-gebauer/replant",
+  "main": "index.js",
+  "dependencies": {
+    "tree-sitter": "^0.16.1",
+    "tree-sitter-kotlin": "^0.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "run": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
