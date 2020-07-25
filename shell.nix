@@ -14,6 +14,7 @@ mkShell {
     nodejs
     python3
     kotlin
+    inotify-tools
   ];
   LIB_KOTLIN_TREE_SITTER = tree-sitter-kotlin;
 }
