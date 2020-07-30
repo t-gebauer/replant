@@ -8,7 +8,9 @@
     "tree-sitter": "^0.16.1",
     "tree-sitter-kotlin": "^0.2.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "shadow-cljs": "^2.10.18"
+  },
   "scripts": {
     "run": "node index.js",
     "watch": "while inotifywait --quiet index.js; do npm run-script run; done",

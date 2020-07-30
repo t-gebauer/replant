@@ -1,0 +1,13 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src/dev"
+  "src/main"
+  "src/test"]
+
+ :dependencies
+ []
+
+ :builds
+ {:cli {:target :node-script
+        :main t-gebauer.replant/main
+        :output-to "out/replant"}}}
