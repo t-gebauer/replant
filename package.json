@@ -12,8 +12,7 @@
     "shadow-cljs": "^2.10.18"
   },
   "scripts": {
-    "run": "node index.js",
-    "watch": "while inotifywait --quiet index.js; do npm run-script run; done",
+    "run": "node out/replant",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

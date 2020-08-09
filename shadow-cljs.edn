@@ -9,5 +9,5 @@
 
  :builds
  {:cli {:target :node-script
-        :main t-gebauer.replant/main
+        :main t-gebauer.replant.main/main
         :output-to "out/replant"}}}
