@@ -1,7 +1,8 @@
 (ns t-gebauer.replant.parser
   (:require ["tree-sitter" :as Parser]
             ["tree-sitter-kotlin" :as language-kotlin]
-            ["fs" :as fs])
+            ["fs" :as fs]
+            [cljs.test :refer (deftest is)])
   (:use [clojure.pprint :only [pprint]]))
 
 (def parser (new Parser))
@@ -52,3 +53,23 @@
     (println result)
     (println "Writing" file-name)
     (.. fs (writeFileSync (clojure.string/lower-case (str "out/" (:name class) ".ts")) result))))
+
+(defn parse-class [source]
+  (let [tree (.. parser (parse source))
+        classNode (.. tree -rootNode -children (find #(= (.-type %) "class_declaration")))
+        class (extract-class classNode)]
+    class))
+
+(deftest should-parse-some-class-source
+  (is (=
+       {:name "Binary"
+        :parameters [{:identifier "field1"
+                      :type "number"
+                      :mutable false
+                      :nullable true}
+                     {:identifier "BetterField"
+                      :type "unknown"
+                      :mutable true
+                      :nullable false}]}
+       (parse-class "data class Binary( val field1: Long?, @Something var BetterField: LocalDate)"))))
+

@@ -10,4 +10,8 @@
  :builds
  {:cli {:target :node-script
         :main t-gebauer.replant.main/main
-        :output-to "out/replant"}}}
+        :output-to "out/replant"}
+  :test {:target :node-test
+         :output-to "out/tests.js"
+         :ns-regexp ""
+         :autorun true}}}
