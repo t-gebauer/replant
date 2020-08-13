@@ -33,27 +33,6 @@
     {:name className
      :parameters parameters}))
 
-(defn- create-ts-param [param]
-  (str "  " (:identifier param) ": " (:type param) (if (:nullable param) " | null")))
-
-(defn- create-ts-class [class]
-  (str "export class " (:name class) " {\n"
-       (apply str (interpose "\n" (map create-ts-param (:parameters class))))
-       "\n}\n"))
-
-(defn parse-file [file-name]
-  (println "Parsing" file-name)
-  (let [source (.. fs (readFileSync file-name) toString)
-        tree (.. parser (parse source))
-        classNode (.. tree -rootNode -children (find #(= (.-type %) "class_declaration")))
-        class (extract-class classNode)
-        result (create-ts-class class)]
-    (println source)
-    (pprint class)
-    (println result)
-    (println "Writing" file-name)
-    (.. fs (writeFileSync (clojure.string/lower-case (str "out/" (:name class) ".ts")) result))))
-
 (defn parse-class [source]
   (let [tree (.. parser (parse source))
         classNode (.. tree -rootNode -children (find #(= (.-type %) "class_declaration")))
@@ -71,5 +50,4 @@
                       :type "unknown"
                       :mutable true
                       :nullable false}]}
-       (parse-class "data class Binary( val field1: Long?, @Something var BetterField: LocalDate)"))))
-
+       (parse-class "data class Binary( val field1: Long?, var BetterField: LocalDate)"))))
