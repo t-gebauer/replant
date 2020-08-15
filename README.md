@@ -5,7 +5,7 @@ Uses [tree-sitter](https://github.com/tree-sitter/tree-sitter) via [Node.js bind
 
 ## Status
 
-Prototype
+Prototype - proof of concept
 
 ## Goals
 
