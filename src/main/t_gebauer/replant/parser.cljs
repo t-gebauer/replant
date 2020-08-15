@@ -15,14 +15,15 @@
     "unknown"))
 
 (defn- extract-parameter [node]
-  (let [firstChildNode (first (.-children node))
-        children (.-children node)
-        typeNode (nth children 3)
+  (let [children (.-children node)
+        varVal (first (filter #(or (= (.-text %) "val") (= (.-text %) "var")) children))
+        identifierNode (first (filter #(= (.-type %) "simple_identifier") children))
+        typeNode (last children)
         isNullable (= "nullable_type" (.-type typeNode))
         type (if isNullable (.. typeNode -firstChild -text) (.. typeNode -text))]
-    {:identifier (.-text (second children))
+    {:identifier (.-text identifierNode)
      :type (map-type type)
-     :mutable (= "var" (.-text (first children)))
+     :mutable (= "var" (.-text varVal))
      :nullable isNullable}))
 
 (defn- extract-class [classNode]
@@ -50,4 +51,32 @@
                       :type "unknown"
                       :mutable true
                       :nullable false}]}
-       (parse-class "data class Binary( val field1: Long?, var BetterField: LocalDate)"))))
+       (parse-class "data class Binary(val field1: Long?, var BetterField: LocalDate)"))))
+
+(deftest should-parse-class-with-annotated-parameter
+  (is (=
+       {:name "Binary"
+        :parameters [{:identifier "field1"
+                      :type "number"
+                      :mutable false
+                      :nullable true}
+                     {:identifier "BetterField"
+                      :type "unknown"
+                      :mutable true
+                      :nullable false}]}
+       (parse-class "import bar.foo.Something\nimport java.util.LocalDate\n data class Binary( val field1: Long?, @Something var BetterField: LocalDate)"))))
+
+
+;; TODO fixme
+;; (deftest should-parse-class-with-field-annotated-parameter
+;;   (is (=
+;;        {:name "Binary"
+;;         :parameters [{:identifier "field1"
+;;                       :type "number"
+;;                       :mutable false
+;;                       :nullable true}
+;;                      {:identifier "BetterField"
+;;                       :type "unknown"
+;;                       :mutable true
+;;                       :nullable false}]}
+;;        (parse-class "import bar.foo.Something\nimport java.util.LocalDate\n data class Binary( val field1: Long?, @field:Something var BetterField: LocalDate)"))))
