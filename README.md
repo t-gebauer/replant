@@ -9,12 +9,14 @@ Prototype - proof of concept
 
 ## Goals
 
+- The focus lies on transpiling data classes or [POJO](https://en.wikipedia.org/wiki/Plain_old_Java_object)s. It is not planned to try to convert any method logic.
 - Simplicity (usage of the tree-sitter AST is even easier than using regular expressions?)
 - Resistant to syntax changes
 - Easy to adapt to different source (and output?) languages
 
-## Example
+## Examples
 
+### Data class
 Kotlin input:
 ```kotlin
 data class Apple(
@@ -23,14 +25,31 @@ data class Apple(
     val size: Int
 )
 ```
+
 Generated TypeScript output:
+(At least that is what is planned, we are not there yet)
 ```typescript
 export class Apple {
-  id: number | null
-  color: string
-  size: number
+  readonly id: number | null
+  readonly color: string
+  readonly size: number
+
+  constructor (...)
+
+  copy(...): Apple
 }
 ```
+
+### Enums
+
+... tbd ...
+
+## Development
+
+This project currently uses [shadow-cljs](http://shadow-cljs.org/) to compile ClojureScript. This makes it very easy to add npm dependencies and requires nearly zero configuration.
+
+1. (Optionally) `shadow-cljs server start` Speeds up the following commands
+2. `shadow-cljs watch :test` to compile the :test target (and recompile on changes)
 
 ## Comparison to alternative implementations
 

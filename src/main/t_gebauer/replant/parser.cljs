@@ -8,6 +8,7 @@
 
 (defn- print-string [string]
   (pprint (reader/read-string string)))
+
 (defn- print-node [node]
   (print-string (.toString node)))
 
@@ -42,8 +43,15 @@
     {:name className
      :parameters parameters}))
 
+(defn- preprocess
+  "Hacky! We know that the parser currently can't handle use site annotated parameters.
+  So we remove them upfront :)"
+  [source]
+  (clojure.string/replace source #"@\w+:" ""))
+
 (defn parse-class [source]
-  (let [tree (.. parser (parse source))
+  (let [source (preprocess source)
+        tree (.. parser (parse source))
         classNode (.. tree -rootNode -children (find #(= (.-type %) "class_declaration")))
         class (extract-class classNode)]
     class))
