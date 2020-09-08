@@ -9,11 +9,13 @@
         :parameters [{:identifier "field1"
                       :type "number"
                       :mutable false
-                      :nullable true}
+                      :nullable true
+                      :default nil}
                      {:identifier "BetterField"
-                      :type "unknown"   ; TODO Add some way to map to a custom type
+                      :type "unknown" ; TODO Add some way to map to a custom type
                       :mutable true
-                      :nullable false}]}
+                      :nullable false
+                      :default nil}]}
        (sut/parse-class "data class Binary(val field1: Long?, var BetterField: LocalDate)"))))
 
 (deftest should-parse-class-with-annotated-parameter
@@ -22,11 +24,13 @@
         :parameters [{:identifier "field1"
                       :type "number"
                       :mutable false
-                      :nullable true}
+                      :nullable true
+                      :default nil}
                      {:identifier "BetterField"
                       :type "unknown"
                       :mutable true
-                      :nullable false}]}
+                      :nullable false
+                      :default nil}]}
        (sut/parse-class "import bar.foo.Something
                      import java.util.LocalDate
                      data class Binary(val field1: Long?, @Something var BetterField: LocalDate)"))))
@@ -39,7 +43,8 @@
            {:identifier "branch"
             :type "boolean"
             :mutable false
-            :nullable false}))))
+            :nullable false
+            :default nil}))))
 
 ;; (class_declaration
 ;;  (type_identifier)
@@ -59,7 +64,8 @@
            {:identifier "branch"
             :type "boolean"
             :mutable false
-            :nullable false}))))
+            :nullable false
+            :default nil}))))
 
 ;; (class_declaration
 ;;  (type_identifier)
@@ -71,18 +77,20 @@
 
 
 (deftest should-parse-class-with-use-site-annotated-parameter-3
-  (let [class (sut/parse-class "class Binary(@field:Deps val branch: Boolean, var remedy: String)")]
+  (let [class (sut/parse-class "class Binary(@field:Deps val branch: Boolean, var twig: String)")]
     (is (= (:name class) "Binary") )
     (is (= (first (:parameters class))
            {:identifier "branch"
             :type "boolean"
             :mutable false
-            :nullable false}))
+            :nullable false
+            :default nil}))
     (is (= (second (:parameters class))
-           {:identifier "remedy"
+           {:identifier "twig"
             :type "string"
             :mutable true
-            :nullable false}))
+            :nullable false
+            :default nil}))
     (is (= (count (:parameters class)) 2))))
 
 ;; (class_declaration
@@ -95,3 +103,20 @@
 ;;     (user_type (type_identifier))))
 ;;   (class_parameter (simple_identifier) (user_type (type_identifier)))
 ;;   (class_parameter (simple_identifier) (user_type (type_identifier)))))
+
+(deftest should-handle-default-parameters
+  (let [class (sut/parse-class "data class User(val name: String = \"\", val age: Int = 0)")]
+    (is (= (:name class) "User") )
+    (is (= (first (:parameters class))
+           {:identifier "name"
+            :type "string"
+            :mutable false
+            :nullable false
+            :default "\"\""}))
+    (is (= (second (:parameters class))
+           {:identifier "age"
+            :type "number"
+            :mutable false
+            :nullable false
+            :default "0"}))
+    (is (= (count (:parameters class)) 2))))

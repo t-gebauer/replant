@@ -23,17 +23,23 @@
     "unknown"))
 ;; TODO Collections
 
+(defn- is-type-node? [node]
+  (let [type (.-type node)]
+    (or (= type "nullable_type") (= type "user_type"))))
+
 (defn- extract-parameter [node]
   (let [children (.-children node)
         varVal (first (filter #(or (= (.-text %) "val") (= (.-text %) "var")) children))
         identifierNode (first (filter #(= (.-type %) "simple_identifier") children))
-        typeNode (last children)        ; TODO there might be a default value after the type: `= "value"`
+        typeNode (first (filter is-type-node? children))
         isNullable (= "nullable_type" (.-type typeNode))
-        type (if isNullable (.. typeNode -firstChild -text) (.. typeNode -text))]
+        type (if isNullable (.. typeNode -firstChild -text) (.. typeNode -text))
+        defaultValueNode (if-not (= (last children) typeNode) (last children))]
     {:identifier (.-text identifierNode)
      :type (map-type type)
      :mutable (= "var" (.-text varVal))
-     :nullable isNullable}))
+     :nullable isNullable
+     :default (if defaultValueNode (.-text defaultValueNode))}))
 
 (defn- extract-class [classNode]
   (let [className (.. classNode -children (find #(= (.-type %) "type_identifier")) -text)
