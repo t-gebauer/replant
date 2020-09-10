@@ -22,21 +22,35 @@ Kotlin input:
 data class Apple(
     var id: Long?,
     val color: String,
-    val size: Int
+    val size: Int,
+    val updated: LocalDate
 )
 ```
 
 Generated TypeScript output:
 (At least that is what is planned, we are not there yet)
 ```typescript
-export class Apple {
-  readonly id: number | null
-  readonly color: string
-  readonly size: number
+interface IApple {
+    readonly id: number | null
+    readonly color: string
+    readonly size: number
+    readonly updated: Date
+}
 
-  constructor (...)
+export class Apple implements IApple {
 
-  copy(...): Apple
+  constructor (
+    public readonly id: number | null,
+    public readonly color: string,
+    public readonly size: number,
+    public readonly updated: Date,
+  ) {}
+
+  copy(update: Partial<Apple>): Apple {
+    return /* new object with updated fields */
+  }
+
+  static from(obj: IApple): Apple {}
 }
 ```
 

@@ -5,19 +5,21 @@
 (deftest basic-data-class
   (let [source "data class User(val name: String, val age: Int)"
         [class output] (sut/process source)]
-    (is (=
-"export class User {
-  readonly name: string
-  readonly age: number
+    (is (= "export class User {
+  constructor(
+    public readonly name: string,
+    public readonly age: number,
+  ) {}
 }
 " output))))
 
 (deftest basic-data-class-with-default-parameters
   (let [source "data class User(val name: String = \"\", val age: Int = 0)"
         [class output] (sut/process source)]
-    (is (=
-"export class User {
-  readonly name: string
-  readonly age: number
+    (is (= "export class User {
+  constructor(
+    public readonly name: string,
+    public readonly age: number,
+  ) {}
 }
 " output))))
