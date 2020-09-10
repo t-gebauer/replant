@@ -9,9 +9,9 @@ Prototype - proof of concept
 
 ## Goals
 
-- The focus lies on transpiling data classes or [POJO](https://en.wikipedia.org/wiki/Plain_old_Java_object)s. It is not planned to try to convert any method logic.
+- The focus lies on transpiling data classes or [POJO](https://en.wikipedia.org/wiki/Plain_old_Java_object)s. It is not planned to try to convert any logic.
 - Simplicity (usage of the tree-sitter AST is even easier than using regular expressions?)
-- Resistant to syntax changes
+- Resistant to syntax changes (compared to regular expressions)
 - Easy to adapt to different source (and output?) languages
 
 ## Examples

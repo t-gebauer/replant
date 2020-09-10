@@ -7,12 +7,12 @@
   (is (=
        {:name "Binary"
         :parameters [{:identifier "field1"
-                      :type "number"
+                      :type "Long"
                       :mutable false
                       :nullable true
                       :default nil}
                      {:identifier "BetterField"
-                      :type "unknown" ; TODO Add some way to map to a custom type
+                      :type "LocalDate"
                       :mutable true
                       :nullable false
                       :default nil}]}
@@ -22,12 +22,12 @@
   (is (=
        {:name "Binary"
         :parameters [{:identifier "field1"
-                      :type "number"
+                      :type "Long"
                       :mutable false
                       :nullable true
                       :default nil}
                      {:identifier "BetterField"
-                      :type "unknown"
+                      :type "LocalDate"
                       :mutable true
                       :nullable false
                       :default nil}]}
@@ -41,7 +41,7 @@
     (is (= (:name class) "Binary") )
     (is (= (first (:parameters class))
            {:identifier "branch"
-            :type "boolean"
+            :type "Boolean"
             :mutable false
             :nullable false
             :default nil}))))
@@ -62,7 +62,7 @@
     (is (= (:name class) "Binary") )
     (is (= (first (:parameters class))
            {:identifier "branch"
-            :type "boolean"
+            :type "Boolean"
             :mutable false
             :nullable false
             :default nil}))))
@@ -81,13 +81,13 @@
     (is (= (:name class) "Binary") )
     (is (= (first (:parameters class))
            {:identifier "branch"
-            :type "boolean"
+            :type "Boolean"
             :mutable false
             :nullable false
             :default nil}))
     (is (= (second (:parameters class))
            {:identifier "twig"
-            :type "string"
+            :type "String"
             :mutable true
             :nullable false
             :default nil}))
@@ -109,13 +109,13 @@
     (is (= (:name class) "User") )
     (is (= (first (:parameters class))
            {:identifier "name"
-            :type "string"
+            :type "String"
             :mutable false
             :nullable false
             :default "\"\""}))
     (is (= (second (:parameters class))
            {:identifier "age"
-            :type "number"
+            :type "Int"
             :mutable false
             :nullable false
             :default "0"}))

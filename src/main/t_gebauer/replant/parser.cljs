@@ -15,14 +15,6 @@
 (def parser (new Parser))
 (.setLanguage parser language-kotlin)
 
-(defn- map-type [kotlin-type]
-  (case kotlin-type
-    ("Byte" "Short" "Int" "Long" "Float" "Double") "number"
-    "String" "string"
-    "Boolean" "boolean"
-    "unknown"))
-;; TODO Collections
-
 (defn- is-type-node? [node]
   (let [type (.-type node)]
     (or (= type "nullable_type") (= type "user_type"))))
@@ -36,7 +28,7 @@
         type (if isNullable (.. typeNode -firstChild -text) (.. typeNode -text))
         defaultValueNode (if-not (= (last children) typeNode) (last children))]
     {:identifier (.-text identifierNode)
-     :type (map-type type)
+     :type type
      :mutable (= "var" (.-text varVal))
      :nullable isNullable
      :default (if defaultValueNode (.-text defaultValueNode))}))
