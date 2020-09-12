@@ -21,7 +21,7 @@
         file-content (.. fs (readFileSync file-name) toString)
         [parsed-class generated-ts] (process file-content)
         new-file-name (clojure.string/lower-case (str "out/" (:name parsed-class) ".ts"))]
-    (println "Writing" file-name)
+    (println "Writing" new-file-name)
     (.. fs (writeFileSync new-file-name generated-ts))))
 
 ;; When build and started in non-production mode, the application will automatically
