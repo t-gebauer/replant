@@ -9,7 +9,9 @@
     "tree-sitter-kotlin": "^0.2.3"
   },
   "devDependencies": {
-    "shadow-cljs": "^2.10.18"
+    "shadow-cljs": "^2.10.18",
+    "diff-match-patch": "^1.0.5",
+    "colors": "^1.4.0"
   },
   "scripts": {
     "run": "node out/replant",

@@ -16,7 +16,7 @@ Prototype - proof of concept
 
 ## Examples
 
-### Data class
+### Data classes
 Kotlin input:
 ```kotlin
 data class Apple(
